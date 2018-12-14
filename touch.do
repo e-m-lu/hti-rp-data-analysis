@@ -1,6 +1,8 @@
 use "C:\Users\Fei\Desktop\touch.dta", clear
 set more off
 
+//GitHub test!!
+
 browse
 
 * drop variables we won't analyze
