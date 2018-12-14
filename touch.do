@@ -1,4 +1,6 @@
-use "C:\Users\Fei\Desktop\touch.dta", clear
+//use "C:\Users\Fei\Desktop\touch.dta", clear
+use touch.dta, clear
+
 set more off
 
 //GitHub test!!
@@ -37,10 +39,24 @@ drop if id == 302 // one touch
 drop if id == 409
 drop if id == 616
 
+//drop double entries(otherwise long-wide formatting doesnt work):
+drop in 37
+
 * reverse touchq if script is B // this doesn't work yet, please let me know if you find a solution :)
+/*
 if script == "B"{
 	recode (2=4) (4=2)
 }
+*/
+
+// I'm not sure whether we want to reverse touchq since then we don't now anymore if the neg or pos touch was given first (especially since for example the factor analysis requires that knownledge)
+//maybe something like this: 
+gen pos = 1 if touchq == 2 & script == "A"
+replace pos = 1 if touchq == 4 & script == "B"
+replace pos = 0 if touchq == 4 & script == "A"
+replace pos = 0 if touchq == 2 & script == "B"
+
+
 
 * check missing data, how to deal with it? listwise or casewise option?
 mdesc
@@ -58,6 +74,10 @@ polychoric light_heavy-elastic_rigid if touchq == 2 // short_long doesn't seem t
 												   // but most have low-medium correlation, we want to avoid multicollinearity in factor analysis 
 												   // (less shared explained variance)
 polychoric light_heavy-elastic_rigid if touchq == 4 // short_long still doesn't correlate well, except for the first two items
+
+//Interesting to see how the correlations are for pos and neg touches (short_long also seems to be the outlier here)
+polychoric light_heavy-elastic_rigid if pos == 1
+polychoric light_heavy-elastic_rigid if pos == 0
 
 * factor analysis for physical sensation
 display r(sum_w)
@@ -85,9 +105,28 @@ swilk comfortable if touchq == 2
 swilk comfortable if touchq == 4 // normal
 robvar comfortable, by(touchq) // equal variance
 
+//take mean of all comfortable variables:
+egen comf_mean = rmean(comfortable-pleased) //rmean is supposed to take average of all NON-MISSING values 
+
+//reshape to wide format:
+reshape wide touchq-elastic_rigid comf_mean, i(id) j(pos)
+
+ttest comf_mean1 = comf_mean0 //this should be a paired t-test
+
+//and for the other variables (or did we have to do the t-test per factor? Let me check that in my notes..)
+ttest light_heavy0 ==light_heavy1
+ttest soft_hard0 == soft_hard1
+ttest short_long0 == short_long1
+ttest relaxed_tense0 == relaxed_tense1
+ttest smooth_rough0 == smooth_rough1
+ttest elastic_rigid0 ==elastic_rigid1
+
+
 // recode data into wide format so that q2 and q4 are in different columns, and then do paired
 // this also doesn't work so far.. no idea why
-reshape wide comfortable, i(id) j(touchq)
+//reshape wide comfortable, i(id) j(touchq)
+
+
 
 // gen comfort_pos = comfortable if touchq == 2
 // gen comfort_neg = comfortable if touchq == 4
