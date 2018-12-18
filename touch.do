@@ -40,6 +40,7 @@ alpha comfortable-pleased, item // include missing, alpha=0.89, excluding any it
 * correlation matrix for physical sensation (pos vs. neg), drop items with < 0.3 with all other items
 //Interesting to see how the correlations are for pos and neg touches (short_long also seems to be the outlier here) //agreed
 // But wait, I thought we were still doing the factor analysis two times, once for q2 and once for q4? I added correlations for positive and negative responses as an interesting insight, not with the intention of replacing the q2 and q4 factor analysis. 
+// E: hmmm, but if we run for q2 and q4 it's a mixture of both orders, half of the q2s are positive, half negative, I'm not sure what we expect to gain from the analysis :/
 polychoric light_heavy-elastic_rigid if pos == 1
 polychoric light_heavy-elastic_rigid if pos == 0
 
@@ -61,27 +62,17 @@ egen firstfactor = rmean(relaxed_tense-elastic_rigid) //Lets see how this goes
 reshape wide touchq-elastic_rigid comf_mean firstfactor, i(id) j(pos)
 
 * ttest assumptions
-* normality
+* A1: normality
 swilk comf_mean1 // rejected p=0.01
 swilk comf_mean0
 
-// * normality per item (since we're not running ttest per item for the first scale, this is perhaps not necessary)
-// bysort pos: swilk comfortable // pos rejected p=0.01
-// bysort pos: swilk pleasant
-// bysort pos: swilk welcomed
-// bysort pos: swilk atease
-// bysort pos: swilk acceptable // pos rejected p=0.03
-// bysort pos: swilk pleased
+// equal variances
+// these use the old variable names, when I run them they give an error:
+// E: This is me being on autopilot, for paired ttest equal variance assumption is automatically met xD no need to test this
 
-* equal variances per item
-/* these use the old variable names, when I run them they give an error:
-robvar comfortable, by(pos) // rejected p=0.01
-robvar pleasant, by(pos)
-robvar welcomed, by(pos)
-robvar atease, by(pos)
-robvar acceptable, by(pos)
-robvar pleased, by(pos)
-*/ 
+* A2: no significant outliers in the differences between the two related groups
+// I just checked apprantly this is an important assumption, we might have to look into it
+
 * paired ttest for comfortable scale (average)
 ttest comf_mean1 == comf_mean0 // significant p=0.00
 
