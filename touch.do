@@ -78,8 +78,18 @@ reshape wide touchq-elastic_rigid comf_mean firstfactor secondfactor, i(id) j(po
 swilk comf_mean1 // rejected p=0.01
 swilk comf_mean0
 
+swilk firstfactor1
+swilk firstfactor0
+
+swilk short_long1
+swilk short_long0
+
+swilk secondfactor1
+swilk secondfactor0
+
 * A2: no significant outliers in the differences between the two related groups
 // I just checked apprantly this is an important assumption, there's no standard way to quailfy "outliers" in Likert scale responses, but we can mention it in the report
+graph box comf_mean0 comf_mean1 firstfactor0 secondfactor0 short_long0 short_long1 firstfactor1 secondfactor1 // how to label outliers
 
 * paired ttest for comfortable scale (average)
 ttest comf_mean1 == comf_mean0 // significant p=0.00
