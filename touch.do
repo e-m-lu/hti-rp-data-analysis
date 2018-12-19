@@ -41,9 +41,20 @@ alpha comfortable-pleased, item // include missing, alpha=0.89, excluding any it
 //Interesting to see how the correlations are for pos and neg touches (short_long also seems to be the outlier here) //agreed
 // But wait, I thought we were still doing the factor analysis two times, once for q2 and once for q4? I added correlations for positive and negative responses as an interesting insight, not with the intention of replacing the q2 and q4 factor analysis. 
 // E: hmmm, but if we run for q2 and q4 it's a mixture of both orders, half of the q2s are positive, half negative, I'm not sure what we expect to gain from the analysis :/
+
+//polychoric light_heavy-elastic_rigid
 polychoric light_heavy-elastic_rigid if pos == 1
 polychoric light_heavy-elastic_rigid if pos == 0
 
+polychoric light_heavy-elastic_rigid if touchq == 2
+* factor analysis for physical sensation
+display r(sum_w)
+global N = r(sum_w)
+matrix r = r(R)
+factormat r, n($N) pf // factors(2)
+rotate, oblimin oblique normalize blank(.3)
+
+polychoric light_heavy-elastic_rigid if touchq == 4
 * factor analysis for physical sensation
 display r(sum_w)
 global N = r(sum_w)
@@ -56,10 +67,15 @@ estat kmo // 0.74 is adequate (>=0.7)
 
 * take mean of all comfortable variables and per factor (rmean is supposed to take average of all NON-MISSING values)
 egen comf_mean = rmean(comfortable-pleased) 
-egen firstfactor = rmean(relaxed_tense-elastic_rigid) //Lets see how this goes
+//First factor: is more about pressure/strenght on the skin
+egen firstfactor = rmean(light_heavy-soft_hard) 
+//Second factor: deals more with movement
+egen secondfactor = rmean(relaxed_tense-elastic_rigid) 
+//Third factor is short_long. This one deals with duration (time and/or length). One explanation for the insignificance might be that the physical device had a fixed and thus limited length. 
+
 
 * reshape to wide format:
-reshape wide touchq-elastic_rigid comf_mean firstfactor, i(id) j(pos)
+reshape wide touchq-elastic_rigid comf_mean firstfactor secondfactor, i(id) j(pos)
 
 * ttest assumptions
 * A1: normality
@@ -81,13 +97,15 @@ ttest comf_mean1 == comf_mean0 // significant p=0.00
 // I think Antal suggested we do per factor using factor mean
 //Yes, I agree, Antal suggested we'd do ttest per factor mean. I made the variable firstfactor as a test, based on the current factor analysis (I added some comments to it btw, have a look). I think we may have to sit down and decide on the factors we will be using. 
 
-ttest light_heavy1 == light_heavy0
+ttest light_heavy1 == light_heavy0 
 ttest soft_hard1 == soft_hard0
-ttest short_long1 == short_long0
+ttest short_long1 == short_long0 //this item is very different. In the q2 factor analysis it was left out (so it would be a seperate factor). Also, short_long deals with time, while all other factors are really about physical sensations. 
+//Also, the ttest of the first factor is even more unsignificant if we add short_long to it.
 ttest relaxed_tense1 == relaxed_tense0
 ttest smooth_rough1 == smooth_rough0
 ttest elastic_rigid1 == elastic_rigid0
 
 ttest firstfactor1 == firstfactor0
-
+ttest secondfactor1 == secondfactor0
+ttest short_long1 == short_long0
 * whether age / gender could be mediators?
