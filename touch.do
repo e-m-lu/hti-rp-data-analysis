@@ -125,7 +125,8 @@ swilk secondfactor0
 
 
 * paired ttest for comfortable scale (average)
-ttest comf_mean1 == comf_mean0 // significant p=0.00
+//CHANGE TTEST INTO TRANSFORMED VARIABLES (right?)
+ttest comf_mean1sq == comf_mean0sq // significant p=0.00
 
 * paired ttest for physical sensation scale (pos vs. neg) per factor
 //and for the other variables (or did we have to do the t-test per factor? Let me check that in my notes..)
