@@ -64,28 +64,29 @@ polychoric light_heavy-elastic_rigid if touchq == 2
 display r(sum_w)
 global N = r(sum_w)
 matrix r = r(R)
-factormat r, n($N) pf // factors(2)
+factormat r, n($N) pf factors(2)
 rotate, oblimin oblique normalize blank(.3)
+
+estat kmo //0.7128 
 
 polychoric light_heavy-elastic_rigid if touchq == 4
 * factor analysis for physical sensation
 display r(sum_w)
 global N = r(sum_w)
 matrix r = r(R)
-factormat r, n($N) pf // factors(2)
+factormat r, n($N) pf factors(2)
 rotate, oblimin oblique normalize blank(.3)
 
 * sample adequacy
-estat kmo //  is adequate (>=0.7)
+estat kmo //  is adequate (0.7248 >=0.7)
 
-//do kmo for q2 and for q4 -> doesnt work with the if-command?
-//estat kmo if touchq == 4 
-//estat kmo if touchq == 2
 
 * take mean of all comfortable variables and per factor (rmean is supposed to take average of all NON-MISSING values)
 egen comf_mean = rmean(comfortable-pleased) 
 //First factor: is more about pressure/strength/force on the skin
 egen firstfactor = rmean(light_heavy-soft_hard) 
+//SO: JUST REMOVE THE FIRST FACTOR, AND ONLY LOOK AT THE SECONDFACTOR!
+
 //Second factor: deals more with movement
 egen secondfactor = rmean(relaxed_tense-elastic_rigid) 
 //Third factor is short_long. This one deals with duration (time and/or length). One explanation for the insignificance might be that the physical device had a fixed and thus limited length. 
@@ -125,8 +126,7 @@ swilk secondfactor0
 
 
 * paired ttest for comfortable scale (average)
-//CHANGE TTEST INTO TRANSFORMED VARIABLES (right?)
-ttest comf_mean1sq == comf_mean0sq // significant p=0.00
+ttest comf_mean1sq == comf_mean0sq // significant p=0.0001
 
 * paired ttest for physical sensation scale (pos vs. neg) per factor
 //and for the other variables (or did we have to do the t-test per factor? Let me check that in my notes..)
