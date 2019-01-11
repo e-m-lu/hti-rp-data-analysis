@@ -38,11 +38,27 @@ sum comfortable-elastic_rigid, det
 alpha comfortable-pleased, item // include missing, alpha=0.89, excluding any items gives a lower alpha, so no item is removed
 
 * correlation matrix for physical sensation (pos vs. neg), drop items with < 0.3 with all other items
-//Interesting to see how the correlations are for pos and neg touches (short_long also seems to be the outlier here) //agreed
-// But wait, I thought we were still doing the factor analysis two times, once for q2 and once for q4? I added correlations for positive and negative responses as an interesting insight, not with the intention of replacing the q2 and q4 factor analysis. 
-polychoric light_heavy-elastic_rigid if pos == 1
-polychoric light_heavy-elastic_rigid if pos == 0
 
+//send Antal an email with all the factor analyses (q2,q4 and pos/neg)
+
+
+polychoric light_heavy-elastic_rigid if pos == 1
+* factor analysis for physical sensation
+display r(sum_w)
+global N = r(sum_w)
+matrix r = r(R)
+factormat r, n($N) pf // factors(2)
+rotate, oblimin oblique normalize blank(.3)
+
+polychoric light_heavy-elastic_rigid if pos == 0
+* factor analysis for physical sensation
+display r(sum_w)
+global N = r(sum_w)
+matrix r = r(R)
+factormat r, n($N) pf // factors(2)
+rotate, oblimin oblique normalize blank(.3)
+
+//its more likely that the meaning/interpretation of the questionnaire changes between questionnaire, that is why we should look at the following factor analyses for q2 and q4. 
 polychoric light_heavy-elastic_rigid if touchq == 2
 * factor analysis for physical sensation
 display r(sum_w)
@@ -60,7 +76,11 @@ factormat r, n($N) pf // factors(2)
 rotate, oblimin oblique normalize blank(.3)
 
 * sample adequacy
-estat kmo // 0.74 is adequate (>=0.7)
+estat kmo //  is adequate (>=0.7)
+
+//do kmo for q2 and for q4 -> doesnt work with the if-command?
+//estat kmo if touchq == 4 
+//estat kmo if touchq == 2
 
 * take mean of all comfortable variables and per factor (rmean is supposed to take average of all NON-MISSING values)
 egen comf_mean = rmean(comfortable-pleased) 
@@ -77,6 +97,18 @@ reshape wide touchq-elastic_rigid comf_mean firstfactor secondfactor, i(id) j(po
 * A1: normality
 swilk comf_mean1 // rejected p=0.01
 swilk comf_mean0
+ladder comf_mean1 
+ladder comf_mean0 //squared transformation has p>0.05 in both ladders, so lets use that.
+
+//gladder comf_mean1
+//gladder comf_mean0
+
+gen comf_mean1sq = comf_mean1^2
+gen comf_mean0sq = comf_mean0^2
+//Both variables are normal now:
+swilk comf_mean1sq //p=0.97602
+swilk comf_mean0sq //p=0.14892
+
 
 swilk firstfactor1
 swilk firstfactor0
@@ -89,7 +121,8 @@ swilk secondfactor0
 
 * A2: no significant outliers in the differences between the two related groups
 // I just checked apprantly this is an important assumption, there's no standard way to quailfy "outliers" in Likert scale responses, but we can mention it in the report
-graph box comf_mean0 comf_mean1 firstfactor0 secondfactor0 short_long0 short_long1 firstfactor1 secondfactor1 // how to label outliers
+//graph box comf_mean0 comf_mean1 firstfactor0 secondfactor0 short_long0 short_long1 firstfactor1 secondfactor1 // how to label outliers
+
 
 * paired ttest for comfortable scale (average)
 ttest comf_mean1 == comf_mean0 // significant p=0.00
