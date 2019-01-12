@@ -1,6 +1,13 @@
 use touch.dta, clear
 set more off
 
+/*POSSIBLE TO DO THINGS:
+Should we do a cronbach alpha on the found factors in the factor analysis, to see whether they actually measure a similar thing (because that is what we're doing right)?
+Check comfortable scale for variance and missing data (just like we did for the sensation scales). 
+Look into touch aversion; skip participants who have high aversion. 
+Maybe see whether there is a difference in perceived likability of confederate between group that received possitive vs negative first.
+*/
+
 * Drop irrelevant variables
 drop timestamp-confederate meaningofthetouch-whyorwhynot
 
