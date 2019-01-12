@@ -39,9 +39,7 @@ alpha comfortable-pleased, item // include missing, alpha=0.89, excluding any it
 
 * correlation matrix for physical sensation (pos vs. neg), drop items with < 0.3 with all other items
 
-//send Antal an email with all the factor analyses (q2,q4 and pos/neg)
-
-
+/* Can be confusing, so comment these out for the moment:
 polychoric light_heavy-elastic_rigid if pos == 1
 * factor analysis for physical sensation
 display r(sum_w)
@@ -57,25 +55,31 @@ global N = r(sum_w)
 matrix r = r(R)
 factormat r, n($N) pf // factors(2)
 rotate, oblimin oblique normalize blank(.3)
+*/
 
 //its more likely that the meaning/interpretation of the questionnaire changes between questionnaire, that is why we should look at the following factor analyses for q2 and q4. 
-polychoric light_heavy-elastic_rigid if touchq == 2
+polychoric light_heavy soft_hard relaxed_tense smooth_rough elastic_rigid if touchq == 2
 * factor analysis for physical sensation
 display r(sum_w)
 global N = r(sum_w)
 matrix r = r(R)
-factormat r, n($N) pf factors(2)
+factormat r, n($N) pf //factors(2)
 rotate, oblimin oblique normalize blank(.3)
 
 estat kmo //0.7128 
 
-polychoric light_heavy-elastic_rigid if touchq == 4
+polychoric light_heavy soft_hard relaxed_tense smooth_rough elastic_rigid  if touchq == 4
 * factor analysis for physical sensation
 display r(sum_w)
 global N = r(sum_w)
 matrix r = r(R)
-factormat r, n($N) pf factors(2)
+factormat r, n($N) pf //factors(2)
 rotate, oblimin oblique normalize blank(.3)
+
+/* variables relaxed_tense,smooth_rough and elastic_rigid load onto a factor nicely. 
+However, light_heavy short_long soft_hard  do not load onto the factors the same in q2 and q4 factor analysis. Especially short_long is very different, so, try removing it. 
+Results with short_long removed: light_heavy and relaxed_tense now load onto the same factor very strongly. 
+*/
 
 * sample adequacy
 estat kmo //  is adequate (0.7248 >=0.7)
