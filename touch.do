@@ -64,13 +64,19 @@ factormat r, n($N) pf // factors(2)
 rotate, oblimin oblique normalize blank(.3)
 */
 
+
+//Correlations with all items in there (since we remove short_long later on):
+polychoric light_heavy soft_hard short_long relaxed_tense smooth_rough elastic_rigid
+polychoric light_heavy soft_hard short_long relaxed_tense smooth_rough elastic_rigid if touchq == 2
+polychoric light_heavy soft_hard short_long relaxed_tense smooth_rough elastic_rigid if touchq == 4
+
 * Correlation matrix and factor analysis for physical sensation scale (Q2 vs. Q4)
 //its more likely that the meaning/interpretation of the questionnaire changes between questionnaire, that is why we should look at the following factor analyses for q2 and q4. 
 polychoric light_heavy soft_hard relaxed_tense smooth_rough elastic_rigid if touchq == 2
 display r(sum_w)
 global N = r(sum_w)
 matrix r = r(R)
-factormat r, n($N) pf factors(2) // results don't change much after specifying extracting 2 factors
+factormat r, n($N) pf //factors(2) // results don't change much after specifying extracting 2 factors
 rotate, oblimin oblique normalize blank(.3)
 estat kmo // .69, nearly adequate sample size (>=.70)
 
@@ -78,7 +84,7 @@ polychoric light_heavy soft_hard relaxed_tense smooth_rough elastic_rigid  if to
 display r(sum_w)
 global N = r(sum_w)
 matrix r = r(R)
-factormat r, n($N) pf factors(2)
+factormat r, n($N) pf //factors(2)
 rotate, oblimin oblique normalize blank(.3)
 estat kmo // .72, adequate sample size
 
