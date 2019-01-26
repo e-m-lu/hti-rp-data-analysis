@@ -20,7 +20,7 @@ ren (g h i j k l) (light_heavy soft_hard short_long relaxed_tense smooth_rough e
 drop if id == 101 | id == 105 | id == 207 | id == 208 | id == 302 | id == 409 | id == 616
 
 //DROP CASES THAT HAVE AVERAGE TOUCH AVOIDANCE>3!!:
-drop if id== 104 |id== 109 |id== 216 |id== 304 | id== 316 | id== 414 | id== 502 |id== 604 
+//drop if id== 104 |id== 109 |id== 216 |id== 304 | id== 316 | id== 414 | id== 502 |id== 604 
 codebook id // 86 cases left
 
 * Generate pos & neg groups for script A & B

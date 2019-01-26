@@ -19,8 +19,9 @@ egen avoidmean = rmean(avoidshakinghandsofstrangers-annoyingwhenfriendsfamilyhug
 codebook avoidmean, det
 tab avoidmean, freq
 //hist avoidmean
+list id if avoidmean>3
 
-//Cases with the following id's have an avoidmean above 3 (which is an arbitrary number, not necessarily going to be our threshold):
+//The 8 cases with the following id's have an avoidmean above 3 (which is an arbitrary number, not necessarily going to be our threshold):
 //drop if id== 104 |id== 109 |id== 216 |id== 304 | id== 316 | id== 414 | id== 502 |id== 604 
 
 
@@ -39,7 +40,7 @@ tab gender,freq //47 males, 39 females
 //Look at how many A an B scripts were done:
 tab script,freq // 41 A scripts, 45 B scripts.
 
-//Look at whether people like the confederate, and if this differs for A en B sequence:
+//Look at whether people like the confederate, and if this differs for A en B sequence: (please check whether this is the correct way of doing it!):
 egen likemean = rmean(a- b)
 ttest likemean, by(script) // No difference, p=0.16.   Participant 804 did not fill in the data btw. 
 
