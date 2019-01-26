@@ -5,18 +5,20 @@ use general.dta
 gen n = _n 
 drop if n>93
 
-
+// rename variables:
 ren (participantid ) (id )
 
+//Drop cases that are not good data:
 drop if id == 101 | id == 105 | id == 207 | id == 208 | id == 302 | id == 409 | id == 616 //first, drop same participants. 
 codebook id // 86 cases left, also for general.dta, so that is good.
 
+//Take average over all the touch avoidance measures: (takes average of all non-missing values):
 egen avoidmean = rmean(avoidshakinghandsofstrangers-annoyingwhenfriendsfamilyhug)
 
-
+//Have a look at avoidmean:
 codebook avoidmean, det
-//hist avoidmean
 tab avoidmean, freq
+//hist avoidmean
 
 //Cases with the following id's have an avoidmean above 3 (which is an arbitrary number, not necessarily going to be our threshold):
 drop if id== 104 |id== 109 |id== 216 |id== 304 | id== 316 | id== 414 | id== 502 |id== 604 
