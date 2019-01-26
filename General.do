@@ -18,9 +18,19 @@ codebook avoidmean, det
 //hist avoidmean
 tab avoidmean, freq
 
-//Cases with the following id's have an avoidmean above 3:
+//Cases with the following id's have an avoidmean above 3 (which is an arbitrary number, not necessarily going to be our threshold):
 // | 104 |109 |216 |304 | 316 | 414 | 502 |604 |
+
+//WATCH OUT: FOLLOWING NUMBERS ARE BASED ON ORIGINAL DATASET, NO TOUCH AVOIDANCE PEOPLE REMOVED YET!
 
 //Look at age:
 codebook age, det
-tab age
+tab age //average age: 27.1279, SD=10.126
+
+//Look at etnicity:
+tab  ethnicgroup, freq //51 dutch persons, 16 indian guys 
+
+//Look at gender:
+tab gender,freq //47 males, 39 females
+
+
