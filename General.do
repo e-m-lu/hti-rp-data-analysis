@@ -19,7 +19,8 @@ codebook avoidmean, det
 tab avoidmean, freq
 
 //Cases with the following id's have an avoidmean above 3 (which is an arbitrary number, not necessarily going to be our threshold):
-// | 104 |109 |216 |304 | 316 | 414 | 502 |604 |
+drop if id== 104 |id== 109 |id== 216 |id== 304 | id== 316 | id== 414 | id== 502 |id== 604 
+
 
 //WATCH OUT: FOLLOWING NUMBERS ARE BASED ON ORIGINAL DATASET, NO TOUCH AVOIDANCE PEOPLE REMOVED YET!
 
