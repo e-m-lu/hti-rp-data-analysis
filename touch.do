@@ -96,6 +96,15 @@ However, light_heavy short_long soft_hard  do not load onto the factors the same
 Results with short_long removed: light_heavy and relaxed_tense now load onto the same factor very strongly. 
 */
 
+* Cronbach's alpha for each factor
+alpha light_heavy-soft_hard, item // .83
+alpha relaxed_tense-elastic_rigid, item // .80
+
+* Total variance explained by each factor (see first table of factor analysis result)
+// Q2: F1: 87.3%; F2: 25.2%
+// Q4: F1: 96.4%; F2: 10.8%
+// Shall we take an average of the 2Q to report in the result?
+
 * Calculate mean for comfortable scale (rmean is supposed to take average of all NON-MISSING values)
 egen comf_mean = rmean(comfortable-pleased)
 
