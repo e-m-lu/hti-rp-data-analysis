@@ -30,7 +30,7 @@ replace pos = 0 if touchq == 4 & script == "A"
 replace pos = 0 if touchq == 2 & script == "B"
 
 * Missing data
-mdesc // pair-wise or case-wise?
+// mdesc // pair-wise or case-wise?
 
 * Outliers
 /* Antal: checking outliers for Likert scale responses is generally tricky and 
