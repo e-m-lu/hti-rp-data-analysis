@@ -96,6 +96,11 @@ However, light_heavy short_long soft_hard  do not load onto the factors the same
 Results with short_long removed: light_heavy and relaxed_tense now load onto the same factor very strongly. 
 */
 
+* Bartlett's test of sphericity
+factortest light_heavy soft_hard relaxed_tense smooth_rough elastic_rigid if touchq == 2
+factortest light_heavy soft_hard relaxed_tense smooth_rough elastic_rigid if touchq == 4
+// NOTE: these give different KMO than 'estat kmo'!!
+
 * Cronbach's alpha for each factor
 alpha light_heavy-soft_hard, item // .83
 alpha relaxed_tense-elastic_rigid, item // .80
