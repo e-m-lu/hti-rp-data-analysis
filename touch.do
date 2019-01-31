@@ -49,6 +49,7 @@ sum comfortable-elastic_rigid, det // Between 1.4 - 1.9 for all items, so no ano
 * Scale reliability test for comfortable scale
 alpha comfortable-pleased, item // Include missing data, alpha = .89, excluding any items gives a lower alpha, so no item is removed
 
+
 * Correlation matrix and factor analysis for physical sensation scale (Pos vs. Neg): drop if r<.3 with all other items
 /* Can be confusing, so comment these out for the moment:
 polychoric light_heavy-elastic_rigid if pos == 1
@@ -90,6 +91,12 @@ matrix r = r(R)
 factormat r, n($N) pf //factors(2)
 rotate, oblimin oblique normalize blank(.3)
 estat kmo // .72, adequate sample size
+
+//antal added this factor analysis: 
+factor light_heavy soft_hard relaxed_tense smooth_rough elastic_rigid
+
+//PCA? light_heavy soft_hard relaxed_tense smooth_rough elastic_rigid if touchq == 2
+
 
 /* Variables relaxed_tense,smooth_rough and elastic_rigid load onto a factor nicely. 
 However, light_heavy short_long soft_hard  do not load onto the factors the same in q2 and q4 factor analysis. Especially short_long is very different, so, try removing it. 
